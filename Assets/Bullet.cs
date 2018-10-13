@@ -6,6 +6,8 @@ public class Bullet : MonoBehaviour {
 
     [SerializeField]
     float speed = 0;
+    [SerializeField]
+    BulletHitEffect hitEffect = null;
 
     bool movingRight;
 
@@ -28,5 +30,16 @@ public class Bullet : MonoBehaviour {
     {
         //Sets initial facing
         movingRight = facing;
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        //If bullet collides with ground, creates a smoke effect. Initializes it's movement based on facing
+        if (col.gameObject.layer == 8)
+        {
+            BulletHitEffect newEffect = Instantiate(hitEffect, transform.position, Quaternion.identity);
+            newEffect.GenerateMovement(movingRight);
+            Destroy(gameObject);
+        }
     }
 }

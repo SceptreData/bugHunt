@@ -100,8 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0.2
-  jumpSpeed: 0.2
-  maxTimeInAir: 2
+  jumpForce: 0.15
   playerShot: {fileID: 114428733637374316, guid: 9d44ff3f70028fc459a58ea7886cf276,
     type: 2}
 --- !u!212 &212153626064915284

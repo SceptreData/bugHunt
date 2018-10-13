@@ -8,15 +8,12 @@ public class Player : MonoBehaviour {
     [SerializeField]
     float speed = 0;
     [SerializeField]
-    float jumpSpeed = 0;
-    [SerializeField]
-    float maxTimeInAir = 0;
+    float jumpForce = 0;
     [SerializeField]
     Bullet playerShot = null;
 
     bool movingRight = true;
     bool inAir = false;
-    float timeInAir = 0f;
     bool firing = false;
 
 	void Start () {
@@ -24,23 +21,6 @@ public class Player : MonoBehaviour {
 	}
 	
 	void Update () {
-
-        //Grabs horizontal control value. Theoretically works with controllers.
-        float horValue = Input.GetAxis("Horizontal");
-
-        //Moves in proper direction. Updates sprite based on direction
-        if (horValue > 0)
-        {
-            transform.Translate(speed, 0, 0);
-            movingRight = true;
-            GetComponent<SpriteRenderer>().flipX = true;
-        } else if (horValue < 0)
-        {
-            transform.Translate(-speed, 0, 0);
-            movingRight = false;
-            GetComponent<SpriteRenderer>().flipX = false;
-        }
-
         //Checks to see if the player is in the air to prevent air-jumping
         if (Input.GetAxis ("Vertical") > 0 && !inAir)
         {
@@ -60,18 +40,29 @@ public class Player : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        //Air movement is in physics update to prevent stuttering
+        //Movement is in FixedUpdate to prevent clipping into walls
+        //Grabs horizontal control value. Theoretically works with controllers.
+        float horValue = Input.GetAxis("Horizontal");
+
+        //Moves in proper direction. Updates sprite based on direction
+        if (horValue > 0)
+        {
+            transform.Translate(speed, 0, 0);
+            movingRight = true;
+            GetComponent<SpriteRenderer>().flipX = true;
+        }
+        else if (horValue < 0)
+        {
+            transform.Translate(-speed, 0, 0);
+            movingRight = false;
+            GetComponent<SpriteRenderer>().flipX = false;
+        }
+
+        //Air movement
         if (inAir)
         {
-            //Slows upward velocity based on max time in air and jump speed. Can change in the editor
-            float airSpeed = jumpSpeed * (1 - (timeInAir / maxTimeInAir));
-            if (airSpeed < 0f)
-            {
-                airSpeed = 0f;
-            }
-
-            transform.Translate(0, airSpeed, 0);
-            timeInAir += Time.deltaTime;
+            //Moves player upwards based on jumpForce. Can change value in editor
+            transform.Translate(0, jumpForce, 0);
 
             //Raycast to see if player is back on the ground
             int layerMask = 1 << 8;
@@ -93,6 +84,5 @@ public class Player : MonoBehaviour {
     {
         //Jumps
         inAir = true;
-        timeInAir = 0f;
     }
 }
