@@ -10,6 +10,7 @@ public class WaveManager : MonoBehaviour {
     [SerializeField]
     float betweenWaveTime = 0;
 
+    //Debug UI
     public Text waveNumberText, waveTimerText, enemyCountText, waveState;
 
     int waveNumber = 0;
@@ -21,22 +22,24 @@ public class WaveManager : MonoBehaviour {
     public delegate void StartWave(int wave);
     public event StartWave startWave;
 
-    // Use this for initialization
     void Start () {
+        //Start game with an intermission
         BeginIntermission();
 	}
 	
-	// Update is called once per frame
 	void Update () {
         waveTimer += Time.deltaTime;
 
+        //Checks timer if game is in intermission or a wave
         if (interStarted)
         {
+            //Shows remaining time as int
             int remainingTime = Mathf.CeilToInt(betweenWaveTime - waveTimer);
             waveTimerText.text = remainingTime.ToString();
 
             if (waveTimer >= betweenWaveTime)
             {
+                //Starts next wave when time is up
                 interStarted = false;
                 waveStarted = true;
                 BeginWave();
@@ -48,6 +51,7 @@ public class WaveManager : MonoBehaviour {
 
             if (waveTimer >= maxWaveTime)
             {
+                //Starts next wave when time is up
                 waveNumber++;
                 BeginWave();
             }
@@ -55,6 +59,7 @@ public class WaveManager : MonoBehaviour {
 
         if (!interStarted)
         {
+            //If not in intermission, count enemies remaining. Start intermission when no enemies remain
             CountEnemies();
             if (enemyCount == 0)
             {
@@ -80,11 +85,13 @@ public class WaveManager : MonoBehaviour {
         waveTimer = 0;
         waveNumberText.text = waveNumber.ToString();
         waveState.text = "Wave Started";
+        //Will call startWave delegate when spawners are added, causing them to spawn number and types of enemies based on current wave
         //startWave(waveNumber);
     }
 
     void CountEnemies ()
     {
+        //Currently set to 1 for testing
         enemyCount = 1;
         enemyCountText.text = enemyCount.ToString();
     }
