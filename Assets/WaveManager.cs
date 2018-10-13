@@ -17,6 +17,7 @@ public class WaveManager : MonoBehaviour {
     bool interStarted = false;
     bool waveStarted = false;
     float waveTimer = 0;
+    float graceTime = 3f;
     int enemyCount = 0;
 
     public delegate void StartWave(int wave);
@@ -57,10 +58,12 @@ public class WaveManager : MonoBehaviour {
             }
         }
 
-        if (!interStarted)
+        //Counts remaining enemies
+        CountEnemies();
+
+        if (!interStarted && waveTimer >= graceTime)
         {
-            //If not in intermission, count enemies remaining. Start intermission when no enemies remain
-            CountEnemies();
+            //If not in intermission and past grace time to avoid starting next wave immediately, check enemies remaining. Start intermission when no enemies remain
             if (enemyCount == 0)
             {
                 BeginIntermission();
@@ -85,14 +88,15 @@ public class WaveManager : MonoBehaviour {
         waveTimer = 0;
         waveNumberText.text = waveNumber.ToString();
         waveState.text = "Wave Started";
-        //Will call startWave delegate when spawners are added, causing them to spawn number and types of enemies based on current wave
-        //startWave(waveNumber);
+        //Calls startWave delegate, causing spawners to spawn number and types of enemies based on current wave
+        startWave(waveNumber);
     }
 
     void CountEnemies ()
     {
-        //Currently set to 1 for testing
-        enemyCount = 1;
+        //Grabs all enemy objects, then counts the length for number
+        Enemy[] enemies = FindObjectsOfType<Enemy>();
+        enemyCount = enemies.Length;
         enemyCountText.text = enemyCount.ToString();
     }
 }
