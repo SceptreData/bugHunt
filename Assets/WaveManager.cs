@@ -19,6 +19,7 @@ public class WaveManager : MonoBehaviour {
     float waveTimer = 0;
     float graceTime = 3f;
     int enemyCount = 0;
+    bool gameOver = false;
 
     public delegate void StartWave(int wave);
     public event StartWave startWave;
@@ -29,44 +30,48 @@ public class WaveManager : MonoBehaviour {
 	}
 	
 	void Update () {
-        waveTimer += Time.deltaTime;
-
-        //Checks timer if game is in intermission or a wave
-        if (interStarted)
+        if (!gameOver)
         {
-            //Shows remaining time as int
-            int remainingTime = Mathf.CeilToInt(betweenWaveTime - waveTimer);
-            waveTimerText.text = remainingTime.ToString();
+            waveTimer += Time.deltaTime;
 
-            if (waveTimer >= betweenWaveTime)
+            //Checks timer if game is in intermission or a wave
+            if (interStarted)
             {
-                //Starts next wave when time is up
-                interStarted = false;
-                waveStarted = true;
-                BeginWave();
+                //Shows remaining time as int
+                int remainingTime = Mathf.CeilToInt(betweenWaveTime - waveTimer);
+                waveTimerText.text = remainingTime.ToString();
+
+                if (waveTimer >= betweenWaveTime)
+                {
+                    //Starts next wave when time is up
+                    interStarted = false;
+                    waveStarted = true;
+                    BeginWave();
+                }
             }
-        } else if (waveStarted)
-        {
-            int remainingTime = Mathf.CeilToInt(maxWaveTime - waveTimer);
-            waveTimerText.text = remainingTime.ToString();
-
-            if (waveTimer >= maxWaveTime)
+            else if (waveStarted)
             {
-                //Starts next wave when time is up
-                waveNumber++;
-                BeginWave();
+                int remainingTime = Mathf.CeilToInt(maxWaveTime - waveTimer);
+                waveTimerText.text = remainingTime.ToString();
+
+                if (waveTimer >= maxWaveTime)
+                {
+                    //Starts next wave when time is up
+                    waveNumber++;
+                    BeginWave();
+                }
             }
-        }
 
-        //Counts remaining enemies
-        CountEnemies();
+            //Counts remaining enemies
+            CountEnemies();
 
-        if (!interStarted && waveTimer >= graceTime)
-        {
-            //If not in intermission and past grace time to avoid starting next wave immediately, check enemies remaining. Start intermission when no enemies remain
-            if (enemyCount == 0)
+            if (!interStarted && waveTimer >= graceTime)
             {
-                BeginIntermission();
+                //If not in intermission and past grace time to avoid starting next wave immediately, check enemies remaining. Start intermission when no enemies remain
+                if (enemyCount == 0)
+                {
+                    BeginIntermission();
+                }
             }
         }
 	}
@@ -98,5 +103,11 @@ public class WaveManager : MonoBehaviour {
         Enemy[] enemies = FindObjectsOfType<Enemy>();
         enemyCount = enemies.Length;
         enemyCountText.text = enemyCount.ToString();
+    }
+
+    //Sets game over
+    public void GameOver ()
+    {
+        gameOver = true;
     }
 }

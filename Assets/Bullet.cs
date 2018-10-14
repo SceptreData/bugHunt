@@ -56,9 +56,15 @@ public class Bullet : MonoBehaviour {
         }
 
         //If bullet is fired from enemy and hits player, player takes damage, creates a smoke effect
-        if (col.gameObject.layer == 9 && !friendly)
+        if (col.gameObject.layer == 9 && col.gameObject.GetComponent<Player>() && !friendly)
         {
             col.gameObject.GetComponent<Player>().TakeDamage(damage);
+            BulletHitEffect newEffect = Instantiate(hitEffect, transform.position, Quaternion.identity);
+            newEffect.GenerateMovement(movingRight);
+            Destroy(gameObject);
+        } else if (col.gameObject.layer == 9 && col.gameObject.GetComponent<Hive>() && !friendly)
+        {
+            col.gameObject.GetComponent<Hive>().TakeDamage(damage);
             BulletHitEffect newEffect = Instantiate(hitEffect, transform.position, Quaternion.identity);
             newEffect.GenerateMovement(movingRight);
             Destroy(gameObject);

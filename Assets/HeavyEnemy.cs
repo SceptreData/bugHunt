@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RegularEnemy : Enemy {
+public class HeavyEnemy : Enemy {
 
-	void Start () {
-		
-	}
+    void Start()
+    {
+
+    }
 
     //Update and Start functions aren't inherited, so this is in here
     void FixedUpdate()
@@ -42,10 +43,10 @@ public class RegularEnemy : Enemy {
                 transform.Translate(0, jumpPower, 0);
 
                 int layerMask = 1 << 8;
-                if (Physics2D.Raycast(transform.position, Vector2.down, 0.35f, layerMask))
+                if (Physics2D.Raycast(transform.position, Vector2.down, 0.55f, layerMask))
                 {
                     //One last check to avoid getting stuck on walls
-                    if (!Physics2D.Raycast(transform.position, Vector2.left, 0.6f, layerMask))
+                    if (!Physics2D.Raycast(transform.position, Vector2.left, 0.4f, layerMask))
                     {
                         inAir = false;
                     }

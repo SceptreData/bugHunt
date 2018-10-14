@@ -32,6 +32,7 @@ public class Spawner : MonoBehaviour {
     int currentWave;
     int enemiesToSpawn;
     float timer;
+    bool gameOver = false;
 	
 	void Start () {
         //Grabs the wave manager and adds BeginWave() to the delegate
@@ -41,40 +42,47 @@ public class Spawner : MonoBehaviour {
 	
 	
 	void Update () {
-        timer += Time.deltaTime;
-
-        //Used to space out spawning to prevent one giant clump of enemies
-        if (timer >= timeBetweenSpawns && enemiesToSpawn > 0)
+        if (!gameOver)
         {
-            timer -= timeBetweenSpawns;
+            timer += Time.deltaTime;
 
-            //Creates weighting for enemy spawns based on editor settings and what enemies are available
-            int rng;
+            //Used to space out spawning to prevent one giant clump of enemies
+            if (timer >= timeBetweenSpawns && enemiesToSpawn > 0)
+            {
+                timer -= timeBetweenSpawns;
 
-            if (currentWave < waveForHeavies)
-            {
-                rng = 0;
-            } else if (currentWave < waveForBombers)
-            {
-                rng = Random.Range(0, regWeight + heavyWeight + 1);
-            } else
-            {
-                rng = Random.Range(0, regWeight + heavyWeight + bombWeight + 1);
+                //Creates weighting for enemy spawns based on editor settings and what enemies are available
+                int rng;
+
+                if (currentWave < waveForHeavies)
+                {
+                    rng = 0;
+                }
+                else if (currentWave < waveForBombers)
+                {
+                    rng = Random.Range(0, regWeight + heavyWeight + 1);
+                }
+                else
+                {
+                    rng = Random.Range(0, regWeight + heavyWeight + bombWeight + 1);
+                }
+
+                //Spawns enemies based on weighting
+                if (rng <= regWeight)
+                {
+                    Instantiate(regEnemy, transform.position, Quaternion.identity);
+                }
+                else if (rng <= regWeight + heavyWeight)
+                {
+                    Instantiate(heavyEnemy, transform.position, Quaternion.identity);
+                }
+                else
+                {
+                    Instantiate(bombEnemy, transform.position, Quaternion.identity);
+                }
+
+                enemiesToSpawn--;
             }
-            
-            //Spawns enemies based on weighting
-            if (rng <= regWeight)
-            {
-                Instantiate(regEnemy, transform.position, Quaternion.identity);
-            } else if (rng <= regWeight + heavyWeight)
-            {
-                Instantiate(heavyEnemy, transform.position, Quaternion.identity);
-            } else
-            {
-                Instantiate(bombEnemy, transform.position, Quaternion.identity);
-            }
-
-            enemiesToSpawn--;
         }
 	}
 
@@ -84,5 +92,11 @@ public class Spawner : MonoBehaviour {
         timer = 0f;
         currentWave = waveNumber;
         enemiesToSpawn = initialSpawnNumber + (waveNumber * waveSpawnIncrease);
+    }
+
+    //Sets game over
+    public void GameOver ()
+    {
+        gameOver = true;
     }
 }
