@@ -52,14 +52,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialSpawnNumber: 7
-  waveSpawnIncrease: 2
+  waveSpawnIncrease: 1
   waveForHeavies: 3
   waveForBombers: 5
   timeBetweenSpawns: 0.25
-  regEnemy: {fileID: 114027916888151946, guid: 34404a6eae5962a458e9edeb9e477a89, type: 2}
-  heavyEnemy: {fileID: 114027916888151946, guid: 7e6981ed948e835408b387a662a34730,
+  regEnemy: {fileID: 114062916862544268, guid: 34404a6eae5962a458e9edeb9e477a89, type: 2}
+  heavyEnemy: {fileID: 114062916862544268, guid: cb696b9cbc699a54bb367ac01ef7cef5,
     type: 2}
-  bombEnemy: {fileID: 114027916888151946, guid: f6c60f7067d7821419b8eeda8d577d10,
+  bombEnemy: {fileID: 114110637226176178, guid: 51009437f13edea4aa5f22579e5f386e,
     type: 2}
   regWeight: 20
   heavyWeight: 5

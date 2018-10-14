@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114428733637374316}
   - component: {fileID: 58074348148850464}
   m_Layer: 0
-  m_Name: playerShot
+  m_Name: enemyShot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,11 +68,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64232d09d8b6a014196ed1af563ad43c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.4
-  damage: 5
+  speed: 0.1
+  damage: 3
   hitEffect: {fileID: 114727859245731144, guid: f2a9f92d329f7b445bd70b558e8f9aac,
     type: 2}
-  friendly: 1
+  friendly: 0
 --- !u!212 &212123958474991060
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -4,21 +4,45 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour {
 
-    float timer = 0;
+    [SerializeField]
+    protected float speed = 0;
+    [SerializeField]
+    protected int hp = 0;
+    [SerializeField]
+    protected Bullet shot = null;
+    [SerializeField]
+    protected int shotDamage = 0;
+    [SerializeField]
+    protected int shotInterval = 0;
+    [SerializeField]
+    protected int shotChance = 0;
 
-	// Use this for initialization
+    protected float timer = 0;
+    protected bool attacking = false;
+
 	void Start () {
 		
 	}
 	
-	// Update is called once per frame
 	void Update () {
-        timer += Time.deltaTime;
+        
+	}
 
-        //Enemy destroys itself after 5 seconds to test intermission and wave detection
-        if (timer > 5f)
+    //Take damage function. Destroys self when health is 0
+    public void TakeDamage (int amount)
+    {
+        hp -= amount;
+
+        if (hp <= 0)
         {
             Destroy(gameObject);
         }
-	}
+    }
+
+    //Sets whether the enemy is attacking or not
+    public void SetAttacking(bool value)
+    {
+        timer = 0;
+        attacking = value;
+    }
 }
