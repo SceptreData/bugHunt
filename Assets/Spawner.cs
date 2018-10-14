@@ -63,10 +63,10 @@ public class Spawner : MonoBehaviour {
             }
             
             //Spawns enemies based on weighting
-            if (rng < regWeight)
+            if (rng <= regWeight)
             {
                 Instantiate(regEnemy, transform.position, Quaternion.identity);
-            } else if (rng < regWeight + heavyWeight)
+            } else if (rng <= regWeight + heavyWeight)
             {
                 Instantiate(heavyEnemy, transform.position, Quaternion.identity);
             } else

@@ -8,6 +8,8 @@ public class Player : MonoBehaviour {
     [SerializeField]
     float speed = 0;
     [SerializeField]
+    int health = 0;
+    [SerializeField]
     float jumpForce = 0;
     [SerializeField]
     Bullet playerShot = null;
@@ -17,7 +19,7 @@ public class Player : MonoBehaviour {
     bool firing = false;
 
 	void Start () {
-		
+        
 	}
 	
 	void Update () {
@@ -84,5 +86,17 @@ public class Player : MonoBehaviour {
     {
         //Jumps
         inAir = true;
+    }
+
+    //Take damage function. Destroys self when health is 0
+    public void TakeDamage (int amount)
+    {
+        health -= amount;
+
+        if (health <= 0)
+        {
+            Camera.main.transform.SetParent(null);
+            Destroy(gameObject);
+        }
     }
 }
